@@ -12,11 +12,12 @@ import { Separator } from "@/components/ui/separator"
 import { FaSpinner } from 'react-icons/fa';
 import { useInfiniteQuery } from '@tanstack/react-query'
 import { Button } from '../ui/button';
+import { useRouter } from 'next/navigation';
 const SearchBar = ({ }) => {
     const [text, setText] = useState('');
     const [value] = useDebounce(text, 1000);
     const scrollAreaRef = useRef<HTMLDivElement>(null)
-
+    const router = useRouter()
 
 
 
@@ -56,7 +57,7 @@ const SearchBar = ({ }) => {
         }
 
 
-    }, [value])
+    }, [value,refetch])
 
     const handleClickOutside = (event: any) => {
         if (scrollAreaRef.current && !scrollAreaRef.current.contains(event.target)) {
@@ -70,10 +71,15 @@ const SearchBar = ({ }) => {
             document.removeEventListener("mousedown", handleClickOutside);
         };
     }, []);
+    const handleSubmit = (event: React.FormEvent) => {
+        event.preventDefault();
+        router.push(`/search?q=${text}`);
+        setText("")
+    };
 
-    return (<div className='relative w-full max-w-[28rem] flex flex-col'>
+    return (<div className='relative w-full max-w-[28rem] flex flex-col z-50'>
 
-        <div className='flex items-center px-6 py-3  h-12 rounded-full border-2 border-slate-900 dark:border-slate-200 relative'>
+        <form onSubmit={handleSubmit} className='flex  px-6 py-3  h-12 rounded-full border-2 border-slate-900 dark:border-slate-200 relative items-center' >
             <input
                 className='w-full bg-transparent outline-none text-slate-900 dark:text-slate-200'
                 type='text'
@@ -84,10 +90,9 @@ const SearchBar = ({ }) => {
             />
             <label htmlFor='search'>
                 <BsSearch className='pointer-events-none w-4 h-4 text-slate-900 dark:text-slate-200' />
-
             </label>
+        </form>
 
-        </div>
         {
             text.length > 0 && (
                 <div className="absolute top-12 w-full max-h-72  pt-1 ">
@@ -126,16 +131,12 @@ const SearchBar = ({ }) => {
                                 Load More
                             </Button>
                         )}
-                        {hasNextPage && isFetchingNextPage ? (
+                        {hasNextPage && isFetchingNextPage && (
                             <li className=' flex items-center justify-center'>
                                 <FaSpinner className="mr-4 w-4 h-4 animate-spin " mr-2 />
                                 <p className='text-lg font-bold'>Loading...</p>
                             </li>
-                        ) :
-                            (
-                                <>
-                                </>
-                            )}
+                        )}
                     </ScrollArea>
                 </div>)
 

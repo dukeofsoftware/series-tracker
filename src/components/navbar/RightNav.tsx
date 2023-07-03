@@ -22,18 +22,19 @@ import {
 import Account from "./Account";
 import { FC } from "react";
 interface RightNavProps {
-    username: string | null
-    profileImage: string | null
+    username?: string | null
+    profileImage?: string | null
+    userId? : string | null
 }
 
-const RightNav: FC<RightNavProps> = ({ username, profileImage }) => {
+const RightNav: FC<RightNavProps> = ({ username, profileImage,userId }) => {
 
     const { theme, setTheme } = useTheme()
 
     return (
         <div className="flex  items-center justify-end gap-2">
             <SignedIn>
-                <Account username={username} profileImage={profileImage} />
+                <Account username={username} profileImage={profileImage} userId={userId} />
             </SignedIn>
             <SignedOut>
                 {/* Signed out users get sign in button */}

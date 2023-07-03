@@ -6,11 +6,7 @@ interface NavsProps {}
 
 const Navs: FC<NavsProps> = ({}) => {
 
-    const navs = [
-       
-        
-
-    ]
+    const navs = []
 
   return <div>
     
