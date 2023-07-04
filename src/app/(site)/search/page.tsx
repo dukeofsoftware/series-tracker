@@ -1,7 +1,7 @@
 "use client"
 
 import { useInfiniteQuery } from "@tanstack/react-query"
-import {  useEffect, useRef } from "react"
+import { useEffect, useRef } from "react"
 import { useIntersection } from '@mantine/hooks'
 import { useSearchParams } from "next/navigation"
 import axios from "axios"
@@ -9,7 +9,7 @@ import SeriesCard, { SuspenseFallback } from "@/components/series/SeriesCard"
 
 
 
-const Page= ({ }) => {
+const Page = ({ }) => {
   const lastPostRef = useRef<HTMLElement>(null)
   const params = useSearchParams()
   const q = params.get('q')
@@ -18,7 +18,7 @@ const Page= ({ }) => {
     threshold: 1,
   })
 
-  const { data, fetchNextPage,  isFetching, isLoading } = useInfiniteQuery(
+  const { data, fetchNextPage, isFetching, isLoading } = useInfiniteQuery(
     ['infinite-query'],
     async ({ pageParam = 1 }) => {
       const query = `https://www.episodate.com/api/search?q=${q}&page=${pageParam}`
@@ -46,7 +46,15 @@ const Page= ({ }) => {
   }, [entry, fetchNextPage])
   return (<main className="container  mt-6 md:mt-12 min-h-screen">
     <ul className='flex flex-wrap justify-center gap-6 mt-6'>
+     
+      {!isLoading && data?.pages[0].pages === 0 && (
+        <div className="flex flex-col items-center justify-center w-full h-full">
+          <h1 className="text-2xl font-semibold text-center text-slate-900 dark:text-slate-200">
+            No results found
+          </h1>
 
+        </div>
+      )      }
       {!isLoading &&
         data?.pages?.map((page) => {
           return (
@@ -74,7 +82,9 @@ const Page= ({ }) => {
           )
 
         })}
+
       {isLoading || isFetching && <SuspenseFallback />}
+
 
     </ul>
 

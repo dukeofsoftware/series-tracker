@@ -28,10 +28,10 @@ const SearchBar = ({ }) => {
                 .then((res) => {
                     return res.data
                 })
+            if (response.pages === 0) return
             return response
         } catch (error) {
             if (axios.isAxiosError(error)) {
-                console.log("Searchbar error: ", error)
                 toast.error('Something went wrong: ' + error.message)
             }
 
@@ -57,7 +57,7 @@ const SearchBar = ({ }) => {
         }
 
 
-    }, [value,refetch])
+    }, [value, refetch])
 
     const handleClickOutside = (event: any) => {
         if (scrollAreaRef.current && !scrollAreaRef.current.contains(event.target)) {
@@ -78,7 +78,6 @@ const SearchBar = ({ }) => {
     };
 
     return (<div className='relative w-full max-w-[28rem] flex flex-col z-40'>
-
         <form onSubmit={handleSubmit} className='flex  px-6 py-3  h-12 rounded-full border-2 border-slate-900 dark:border-slate-200 relative items-center' >
             <input
                 className='w-full bg-transparent outline-none text-slate-900 dark:text-slate-200'
@@ -96,7 +95,17 @@ const SearchBar = ({ }) => {
         {
             text.length > 0 && (
                 <div className="absolute top-12 w-full max-h-72  pt-1 ">
+
                     <ScrollArea ref={scrollAreaRef} className="h-[23rem] bg-slate-50 dark:bg-slate-900  shadow-md px-3 border-2 border-slate-200/90 py-2 rounded-md">
+                        {!isLoading && !data?.pages[0] && (
+                            <div className="flex flex-col items-center justify-center w-full h-full">
+                                <h1 className="text-2xl font-semibold text-center text-slate-900 dark:text-slate-200">
+                                    No results found
+                                </h1>
+
+                            </div>
+                        )}
+
 
 
 
@@ -126,17 +135,18 @@ const SearchBar = ({ }) => {
 
                             </ul>
                         )}
-                        {hasNextPage && !isFetchingNextPage && (
-                            <Button onClick={() => fetchNextPage()} variant={"ghost"} className='w-full'>
-                                Load More
-                            </Button>
-                        )}
-                        {hasNextPage && isFetchingNextPage && (
-                            <li className=' flex items-center justify-center'>
+                        {isFetchingNextPage
+                            ? <li className=' flex items-center justify-center'>
                                 <FaSpinner className="mr-4 w-4 h-4 animate-spin " mr-2 />
                                 <p className='text-lg font-bold'>Loading...</p>
                             </li>
-                        )}
+                            : hasNextPage
+                                ? <Button onClick={() => fetchNextPage()} variant={"ghost"} className='w-full'>
+                                    Load More
+                                </Button>
+                                : null
+                        }
+
                     </ScrollArea>
                 </div>)
 
