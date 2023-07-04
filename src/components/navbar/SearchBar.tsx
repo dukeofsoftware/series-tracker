@@ -111,7 +111,7 @@ const SearchBar = ({ }) => {
                                         {page?.tv_shows?.map((show: Series) => {
 
                                             return (
-                                                <li className='dark:hover:bg-slate-950 active:hover:bg-slate-950 duration-150 px-2 rounded-lg' key={show.id}>
+                                                <li className='dark:hover:bg-slate-950  dark:active:bg-slate-950 duration-150 px-2 rounded-lg' key={show.id}>
                                                     <SearchBarItem data={show} />
                                                     <Separator />
                                                 </li>
