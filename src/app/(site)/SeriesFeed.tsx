@@ -21,7 +21,7 @@ const SeriesFeed: FC<SeriesFeedProps> = ({ cachedData }) => {
     const router = useRouter()
     const page = useMemo(() => parseInt(params.get('page')!), [params]) || 1
     const { data, isLoading, refetch, isFetching } = useQuery(
-        ['infinite-query'],
+        ['pagination-series-feed'],
         async ({ }) => {
             const query = `https://www.episodate.com/api/most-popular?page=${page}`
             const { data } = await axios.get(query)
@@ -39,7 +39,6 @@ const SeriesFeed: FC<SeriesFeedProps> = ({ cachedData }) => {
     )
     useEffect(() => {
         refetch()
-
     }, [page,refetch])
     return <main className=' mt-6 md:mt-12  container'>
         <h1 className='font-semibold text-2xl text-center'>Most Popular Series</h1>

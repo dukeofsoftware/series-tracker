@@ -69,8 +69,9 @@ const Account: FC<AccountProps> = ({ username, profileImage, userId }) => {
             {
                 userConfig.map((item, index) => (
                     <DropdownMenuItem key={index}>
-                        <item.icon className={item.iconClass} />
-                        <Link href={item.href}>
+                        <Link href={item.href} className='flex '>
+                            <item.icon className={item.iconClass} />
+
                             {item.name}
                         </Link>
                     </DropdownMenuItem>
