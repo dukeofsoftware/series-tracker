@@ -77,7 +77,7 @@ const SearchBar = ({ }) => {
         setText("")
     };
 
-    return (<div className='relative w-full max-w-[28rem] flex flex-col z-50'>
+    return (<div className='relative w-full max-w-[28rem] flex flex-col z-40'>
 
         <form onSubmit={handleSubmit} className='flex  px-6 py-3  h-12 rounded-full border-2 border-slate-900 dark:border-slate-200 relative items-center' >
             <input

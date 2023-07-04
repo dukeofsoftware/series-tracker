@@ -23,12 +23,12 @@ enum EpisodeStatus {
 }
 
 model UserSeries {
-  apiId         String       @id //databasede int
-  userId     String
-  createdAt  DateTime     @default(now())
-  updatedAt  DateTime     @updatedAt
-  episodes   Episode[]
-  status     SeriesStatus @default(PlanToWatch)
+  apiId       String       @id //databasede int
+  userId      String
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  episodes    Episode[]
+  status      SeriesStatus @default(PlanToWatch)
   is_favorite Boolean      @default(false)
 }
 
@@ -36,7 +36,7 @@ model Episode {
   id       String        @id @default(uuid())
   status   EpisodeStatus @default(NotWatched)
   seriesId String
-  series   UserSeries    @relation(fields: [seriesId], references: [apiId])
+  series   UserSeries    @relation(fields: [seriesId], references: [apiId], onDelete: Cascade)
 
   @@index([seriesId])
 }

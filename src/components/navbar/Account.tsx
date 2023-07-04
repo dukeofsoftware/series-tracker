@@ -53,15 +53,14 @@ const Account: FC<AccountProps> = ({ username, profileImage, userId }) => {
     ]
 
     return <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-            <Button variant="ghost">
+        <DropdownMenuTrigger className='p-2 hidden hover:bg-slate-500/20 rounded-md duration-200 md:flex justify-center items-center'>
 
-                <Avatar className='mr-2 h-8 w-8 border border-slate-200'>
-                    <AvatarImage src={profileImage as string} />
-                    <AvatarFallback>{username}</AvatarFallback>
-                </Avatar>
-                {username}
-            </Button>
+
+            <Avatar className='mr-2 h-8 w-8 border border-slate-200'>
+                <AvatarImage src={profileImage as string} />
+                <AvatarFallback>{username}</AvatarFallback>
+            </Avatar>
+            <p className='block'>{username}</p>
 
         </DropdownMenuTrigger>
         <DropdownMenuContent>

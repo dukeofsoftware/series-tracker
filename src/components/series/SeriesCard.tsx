@@ -1,6 +1,6 @@
 import { Series } from '@/types/series'
 import Image from 'next/image'
-import { FC, Suspense } from 'react'
+import { FC } from 'react'
 import Link from 'next/link'
 import { Skeleton } from '../ui/skeleton'
 import { Badge } from '../ui/badge'
@@ -13,7 +13,7 @@ const SeriesCard: FC<SeriesCardProps> = ({
 }) => {
     return (
         <Link href={`/series/${data.permalink}`} className='  w-full  rounded-t-lg shadow-md   '>
-            <div className='bg-slate-100 shadow-md dark:bg-slate-950  pb-4 w-[280px] hover:scale-[0.99] duration-200'>
+            <div className='bg-slate-100 shadow-md dark:bg-slate-950  pb-4 w-[280px] hover:scale-[0.99] duration-200 rounded-t-lg'>
                 <div className='h-[310px] w-full  relative rounded-t-lg'>
                     <Image src={data.image_thumbnail_path} alt={data.name} fill className='object-fill rounded-t-lg opacity-0 transition duration-300 ease-in-out '
                         onLoadingComplete={(image) => image.classList.remove("opacity-0")}
