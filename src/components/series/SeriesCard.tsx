@@ -1,10 +1,12 @@
+"use client"
 import { Series } from '@/types/series'
 import Image from 'next/image'
 import { FC } from 'react'
 import Link from 'next/link'
 import { Skeleton } from '../ui/skeleton'
 import { Badge } from '../ui/badge'
-
+import { AiFillPlusCircle } from 'react-icons/ai'
+import { Button } from '../ui/button'
 interface SeriesCardProps {
     data: Series
 }
@@ -12,12 +14,13 @@ const SeriesCard: FC<SeriesCardProps> = ({
     data
 }) => {
     return (
-        <Link href={`/series/${data.permalink}`} className='  w-full  rounded-t-lg shadow-md   '>
+        <Link href={`/series/${data.permalink}`} className='  w-full  rounded-t-lg shadow-md group  '>
             <div className='bg-slate-100 shadow-md dark:bg-slate-950  pb-4 w-[280px] active:scale-[0.99] hover:scale-[0.99] duration-200 rounded-t-lg'>
                 <div className='h-[310px] w-full  relative rounded-t-lg'>
                     <Image src={data.image_thumbnail_path} alt={data.name} fill className='object-fill rounded-t-lg opacity-0 transition duration-300 ease-in-out '
                         onLoadingComplete={(image) => image.classList.remove("opacity-0")}
                     />
+                
                 </div>
                 <div className='px-4 '>
                     <p className='text-center   font-bold  my-4 '>
@@ -59,10 +62,10 @@ export const SuspenseFallback = () => {
 
 
                         <div className='flex items-center  justify-between'>
-                            <Skeleton className='w-[55px] h-[21px] rounded-md bg-white border'/>
-                           
-                            <Skeleton className='w-[50px] h-[21px] rounded-md border'/>
-                               
+                            <Skeleton className='w-[55px] h-[21px] rounded-md bg-white border' />
+
+                            <Skeleton className='w-[50px] h-[21px] rounded-md border' />
+
                         </div>
                     </div>
                 </Skeleton>

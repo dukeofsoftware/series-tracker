@@ -24,15 +24,10 @@ import { SignOutButton } from "@clerk/nextjs";
 const Account: FC<AccountProps> = ({ username, profileImage, userId }) => {
 
     const userConfig = [
-        {
-            name: "Profile",
-            href: `/user/${username}`,
-            icon: FaUser,
-            iconClass: "w-4 h-4 mr-2 text-sky-500"
-        },
+     
         {
             name: "My List",
-            href: `/user/${username}/lists`,
+            href: `/user/${username}/list`,
             icon: FaList,
             iconClass: "w-4 h-4 mr-2 text-yellow-500"
         },

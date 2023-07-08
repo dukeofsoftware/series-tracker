@@ -1,11 +1,10 @@
 import { FC } from 'react'
+import FavoritePage from './FavoritePage'
 
-interface pageProps {}
+interface pageProps { }
 
-const page: FC<pageProps> = ({}) => {
-  return <>
-    page
-  </>
+const page: FC<pageProps> = ({ }) => {
+  return <FavoritePage />
 }
 
 export default page

@@ -1,60 +1,59 @@
+import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
-import { NextResponse } from "next/server"
-import { deleteSeries, getSeries, postSeries } from "@/actions/series"
+import {  getSeries, postSeries } from "@/actions/series"
 import { currentUser } from "@clerk/nextjs"
 import { z } from "zod"
 
 import { seriesValidator } from "@/lib/validators/series"
 
 export async function GET(req: Request) {
-try {
-  const user = await currentUser()
-  if (!user || !user.id) return new Response("Unauthorized", { status: 401 })
-  const series = await getSeries(user.id)
+  try {
+    const user = await currentUser()
+    if (!user || !user.id) redirect("/auth/login")
+    const series = await getSeries(user.id)
 
-  return new Response(JSON.stringify(series), {
-    headers: { "content-type": "application/json" },
-    status: 200,
-  })
-} catch (error) {
-
-  return new Response("Error getting series", { status: 500 })
-}
-}
-
-export async function DELETE(req: Request) {
-try {
-  const user = await currentUser()
-  if (!user || !user.id) return new Response("Unauthorized", { status: 401 })
-
-  const body = await req.json()
-  const { apiId } = seriesValidator.parse(body)
-
-  if (!apiId) return new Response("apiId is required", { status: 400 })
-
-  await deleteSeries(apiId)
-
-
-  return new Response("Series successfully deleted", { status: 200 })
-} catch (error) {
-  if (error instanceof z.ZodError) {
-    return new Response(error.message, { status: 400 })
+    return new Response(JSON.stringify(series), {
+      headers: { "content-type": "application/json" },
+      status: 200,
+    })
+  } catch (error) {
+    return new Response("Error getting series", { status: 500 })
   }
-  return new Response("Error deleting series", { status: 500 })
-}
 }
 
 export async function POST(req: Request) {
   try {
     const user = await currentUser()
-    if (!user || !user.id) return new Response("Unauthorized", { status: 401 })
+    if (!user || !user.id) redirect("/auth/login")
 
     const body = await req.json()
-    const { apiId } = seriesValidator.parse(body)
+    const {
+      apiId,
+      name,
+      permalink,
+      network,
+      status,
+      image_thumbnail_path,
+    } = seriesValidator.parse(body)
 
     if (!apiId) return new Response("apiId is required", { status: 400 })
+    const existingSeries = await getSeries(user.id)
+    if (existingSeries.find((series: any) => series.apiId === apiId))
+      return new Response("Series already exists", { status: 400 })
+    await postSeries(
+      {
+        apiId,
+        name,
+        permalink,
+        network,
+        status,
+        image_thumbnail_path,
+      },
+      user.id
+    )
 
-    await postSeries(apiId, user.id)
+  
+    revalidatePath(`/api/series/${permalink}`)
 
     return new Response("Series successfully added ", { status: 201 })
   } catch (error) {
@@ -68,7 +67,7 @@ export async function POST(req: Request) {
 export async function PATCH(req: Request) {
   try {
     const user = await currentUser()
-    if (!user || !user.id) return new Response("Unauthorized", { status: 401 })
+    if (!user || !user.id) redirect("/auth/login")
 
     const body = await req.json()
     const { apiId } = seriesValidator.parse(body)

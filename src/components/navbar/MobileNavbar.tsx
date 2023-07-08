@@ -16,28 +16,25 @@ import { useTheme } from "next-themes";
 import { usePathname } from "next/navigation";
 
 interface MobileNavbarProps {
-    user: User | null
+    username: User["username"]
+    userId: User["id"]
+
 }
-const MobileNavbar: FC<MobileNavbarProps> = ({ user }) => {
+const MobileNavbar: FC<MobileNavbarProps> = ({ username, userId }) => {
     const path = usePathname()
     const { theme, setTheme } = useTheme()
     const navbar = useNavbarStore()
     const userConfig = [
-        {
-            name: "Profile",
-            href: `/user/${user?.username}`,
-            icon: FaUser,
-            iconClass: "w-4 h-4 mr-2 text-sky-500"
-        },
+      
         {
             name: "My List",
-            href: `/user/${user?.username}/lists`,
+            href: `/user/${username}/list`,
             icon: FaList,
             iconClass: "w-4 h-4 mr-2 text-yellow-500"
         },
         {
             name: "Favorites",
-            href: `/user/${user?.username}/favorites`,
+            href: `/user/${username}/favorites`,
             icon: AiFillHeart,
             iconClass: "w-4 h-4 mr-2 text-red-500",
 
@@ -92,7 +89,7 @@ const MobileNavbar: FC<MobileNavbarProps> = ({ user }) => {
         }
 
     }, [path])
-    if (!user || !navbar.isNavbarOpen) return null
+    if (!navbar.isNavbarOpen) return null
 
 
     return (<AnimatePresence>
@@ -142,7 +139,7 @@ const MobileNavbar: FC<MobileNavbarProps> = ({ user }) => {
                 </div>
             </div>
             <ul className="flex flex-col ">
-                {userConfig.map((item, index) => (
+                {userId ? userConfig.map((item, index) => (
                     <motion.div key={index} variants={animationItem}>
                         <li className="w-full py-5">
                             <Link href={item.href} key={index} className={cn(buttonVariants({ variant: "link" }), "flex items-center justify-center py-3  text-lg font-semibold ")}>
@@ -153,7 +150,17 @@ const MobileNavbar: FC<MobileNavbarProps> = ({ user }) => {
                         <Separator />
                     </motion.div>
 
-                ))}
+                )) : (
+                    <div className="flex items-center">
+                        <Link href={"/auth/login"} className={cn(buttonVariants({ variant: "default" }))}>
+                            Login
+                        </Link>
+                        <Link href={"/auth/register"} className={cn(buttonVariants({ variant: "outline" }))}>
+                            Sign Up
+                        </Link>
+
+                    </div>
+                )}
             </ul>
         </motion.nav>
     </AnimatePresence >)

@@ -20,7 +20,7 @@ const Navbar = async () => {
                 <SearchBar />
                 <RightNav profileImage={user && user!.profileImageUrl!} username={user && user!.username!} userId={user && user!.id} />
             </header>
-            <MobileNavbar user={user} />
+            <MobileNavbar userId={user?.id!} username={user?.username!} />
         </>
     )
 }

@@ -6,13 +6,12 @@ export const getSeries = async (userId: string) => {
     where: {
       userId: userId,
     },
-   
   })
   return series
 }
 
 export const deleteSeries = async (apiId: string) => {
-  const deletedSeries = await db.userSeries.delete({
+  const deletedSeries = await db.userSeries.deleteMany({
     where: {
       apiId: apiId,
     },
@@ -20,11 +19,16 @@ export const deleteSeries = async (apiId: string) => {
   return deletedSeries
 }
 
-export const postSeries = async (apiId: string, userId: string) => {
+export const postSeries = async (data: SeriesType, userId: string) => {
   const createdSeries = await db.userSeries.create({
     data: {
-      apiId: apiId,
+      apiId: data.apiId.toString(),
       userId: userId,
+      name: data.name,
+      permalink: data.permalink,
+      network: data.network,
+      status: data.status,
+      image_thumbnail_path: data.image_thumbnail_path,
     },
   })
   return createdSeries
