@@ -164,7 +164,7 @@ const SeriesPage: FC<SeriesPageProps> = ({ series, userSeries }) => {
                 </h2>
                 <div className='grid grid-cols-1 gap-5'>
                     {series.episodes.map((episode, i) => (
-                        <div key={i} className='flex flex-col  rounded-md bg-gray-900 border-2 border-white p-3 gap-3 '>
+                        <div key={i} className='flex flex-col  rounded-md bg-gray-200 dark:bg-gray-900  border-2 border-white p-3 gap-3 '>
                             <div><span className='font-bold text-lg'>Season</span> <span className='font-semibold text-sky-500 mr-2'>{episode.season}</span> <span className="font-bold text-lg">Episode</span> <span className='font-semibold text-sky-500  '>{episode.episode}</span>  -  <span className=''>{episode.name}</span></div>
                             <div>Air Date : {episode.air_date}</div>
                         </div>
